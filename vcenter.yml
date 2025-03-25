@@ -1,6 +1,20 @@
 ---
-- hosts: 192.168.22.50
+- name: Testar conexão com vCenter
+  hosts: localhost
   gather_facts: no
+  collections:
+    - community.vmware
+
   tasks:
-    - name: Ping the vcenter
-      ping:
+    - name: Listar datacenters no vCenter
+      vmware_datacenter_info:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+      register: resultado
+
+    - name: Exibir resultado da conexão
+      debug:
+        var: resultado
+
